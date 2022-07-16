@@ -1,8 +1,19 @@
-const io = require('socket.io')(8000,{
-    cors: {
-        origin: '*',
-      }
+const express = require('express');
+const app = express();
+const http = require('http');
+const server =  http.createServer(app);
+const { Server } = require('socket.io');
+const io = new Server(server);
+
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
 });
+
+//const io = require('socket.io')(5000,{
+//    cors: {
+//        origin: '*',
+//      }
+//});
 
 const users = {};
 io.on('connection', socket =>{
@@ -21,3 +32,7 @@ io.on('connection', socket =>{
         delete users[socket.id];
     });
 })
+
+server.listen(2000, () => {
+	console.log('Listening on *:2000');
+});
